@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 							0);
 				}
 				// 传递序列化对象给详情页
-                Intent intent = new Intent(this, DeailActivity.class);
+                Intent intent = new Intent(MainActivity.this, DeailActivity.class);
                 intent.putExtra("person", mSearchResult.get(position));
                 startActivityForResult(intent, position);
 			}

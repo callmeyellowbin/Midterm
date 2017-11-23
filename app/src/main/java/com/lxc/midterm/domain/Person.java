@@ -1,6 +1,8 @@
 package com.lxc.midterm.domain;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable{
 	private Integer person_id;       //用户主键
 	private String name;             //姓名
 	private String sex;              //性别

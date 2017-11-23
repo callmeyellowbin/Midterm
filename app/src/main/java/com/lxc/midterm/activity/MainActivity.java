@@ -2,13 +2,14 @@ package com.lxc.midterm.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.lxc.midterm.Person;
 import com.lxc.midterm.R;
 import com.lxc.midterm.RoleItemAdapter;
+import com.lxc.midterm.domain.Person;
+import com.lxc.midterm.tool.PersonTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,21 @@ public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private TextView beginGame;
 	private List<Person> mPersons = new ArrayList<>();
-	private List<Person> mSearchResult = new ArrayList<>();
 	private InputMethodManager imm; //管理软键盘
+	private Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what){
+				case 0x1:{
+					List<Person>list = (List<Person>) msg.obj;
+					mPersons.addAll(list);
+					adapter.notifyDataSetChanged();
+				}
+				break;
+			}
+			super.handleMessage(msg);
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 		initItems();    //初始化任务列表
 		imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		adapter = new RoleItemAdapter(mSearchResult, this);
+		adapter = new RoleItemAdapter(mPersons, this);
 		adapter.setOnItemClickListener(new RoleItemAdapter.onItemClickListener() {
 			@Override
 			public void onItemClick(View view, int position) {
@@ -58,12 +73,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, position);
 			}
 		});
+
+
 		recyclerView = findViewById(R.id.recycler_view);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setAdapter(adapter);
 
 		search = findViewById(R.id.home_search);
 		edit = findViewById(R.id.home_edit);
+		beginGame = findViewById(R.id.begin_game);
 		search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -115,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 		setupUI(findViewById(R.id.constraint_layout));
+
+		//开始游戏监听
+		beginGame.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				startActivity(new Intent(MainActivity.this,GameActivity.class));
+			}
+		});
 	}
 
 	@Override
@@ -122,14 +148,13 @@ public class MainActivity extends AppCompatActivity {
 		//resultCode返回0无修改，返回1删除，返回2修改
 		switch (resultCode) {
 			case 1: {
-				mSearchResult.remove(requestCode);
 				mPersons.remove(requestCode);
 				adapter.notifyDataSetChanged();
 				break;
 			}
 			case 2: {
 				Person p =(Person) data.getSerializableExtra("person");
-				mSearchResult.set(requestCode, p);
+				mPersons.set(requestCode, p);
 				adapter.notifyDataSetChanged();
 				for (int i = 0; i < mPersons.size(); i++) {
 					if (mPersons.get(i).getName().equals(p.getName())) {
@@ -143,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initItems() {
-
-		for (int i = 0; i < 10; i++) {
+		PersonTool.getTwentyPerson(handler,0,null);
+/*		for (int i = 0; i < 10; i++) {
 			Person item = new Person();
 			item.setHead_url("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=294736936,926228072&fm=27&gp=0.jpg");
 			Log.d("Output i", Integer.toString(i));
@@ -153,17 +178,24 @@ public class MainActivity extends AppCompatActivity {
 			item.setPerson_date("?-?");
 			mPersons.add(item);
 			mSearchResult.add(item);
-		}
+		}*/
 	}
 
 	private void doSearch(String str) {
-		mSearchResult.clear();
-		for(int i = 0; i < mPersons.size(); i++) {
+		mPersons.clear();
+		if(str == null || str.equals("")){
+			//不带关键字的搜索
+			PersonTool.getTwentyPerson(handler,0,null);
+		}else {
+			PersonTool.getTwentyPerson(handler,0,str);
+		}
+
+/*		for(int i = 0; i < mPersons.size(); i++) {
 			if (mPersons.get(i).getName().contains(str)) {
 				mSearchResult.add(mPersons.get(i));
 			}
 		}
-		adapter.notifyDataSetChanged();
+		adapter.notifyDataSetChanged();*/
 	}
 
 	//给所有非输入框控件设置触摸监听，以收起软键盘

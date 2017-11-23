@@ -21,6 +21,11 @@ import com.lxc.midterm.R;
 import com.lxc.midterm.RoleItemAdapter;
 import com.lxc.midterm.domain.Person;
 import com.lxc.midterm.tool.PersonTool;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 	private RoleItemAdapter adapter;
 	private RecyclerView recyclerView;
 	private TextView beginGame;
+	private int pull_times;		//记录上拉刷新的次数
 	private List<Person> mPersons = new ArrayList<>();
 	private InputMethodManager imm; //管理软键盘
 	private Handler handler = new Handler(){
@@ -68,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
 							0);
 				}
 				// 传递序列化对象给详情页
-				//Intent intent = new Intent(this, DeailActivity.class);
-				//intent.putExtra("person", mSearchResult.get(position));
-				//startActivityForResult(intent, position);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("person", mPersons.get(position));
+                startActivityForResult(intent, position);
 			}
 		});
 
@@ -119,6 +125,22 @@ public class MainActivity extends AppCompatActivity {
 				doSearch(contain);
 			}
 		});
+		//下拉刷新
+		pull_times  = 1;
+		RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
+		refreshLayout.setEnableRefresh(false);	//取消下拉刷新功能
+		refreshLayout.setEnableAutoLoadmore(false);
+		refreshLayout.setRefreshFooter(new ClassicsFooter(this)
+												.setProgressResource(R.drawable.progress)
+												.setArrowResource(R.drawable.arrow));
+		refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+			@Override
+			public void onLoadmore(RefreshLayout refreshlayout) {
+				PersonTool.getTwentyPerson(handler,pull_times,null);
+				pull_times++;
+				refreshlayout.finishLoadmore();
+			}
+		});
 		//失去焦点后或者触摸输入框之外需要收起软键盘以完善用户体验
 		edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
@@ -148,7 +170,9 @@ public class MainActivity extends AppCompatActivity {
 		//resultCode返回0无修改，返回1删除，返回2修改
 		switch (resultCode) {
 			case 1: {
-				mPersons.remove(requestCode);
+				PersonTool.deletePerson(handler, requestCode);
+				mPersons.clear();
+				initItems();
 				adapter.notifyDataSetChanged();
 				break;
 			}
@@ -156,29 +180,13 @@ public class MainActivity extends AppCompatActivity {
 				Person p =(Person) data.getSerializableExtra("person");
 				mPersons.set(requestCode, p);
 				adapter.notifyDataSetChanged();
-				for (int i = 0; i < mPersons.size(); i++) {
-					if (mPersons.get(i).getName().equals(p.getName())) {
-						mPersons.set(i, p);
-						break;
-					}
-				}
-				break;
+				// TODO: 2017/11/23 修改的方法还没给出
 			}
 		}
 	}
 
 	private void initItems() {
 		PersonTool.getTwentyPerson(handler,0,null);
-/*		for (int i = 0; i < 10; i++) {
-			Person item = new Person();
-			item.setHead_url("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=294736936,926228072&fm=27&gp=0.jpg");
-			Log.d("Output i", Integer.toString(i));
-			item.setName(""+Integer.toString(i));
-			item.setSex("男");
-			item.setPerson_date("?-?");
-			mPersons.add(item);
-			mSearchResult.add(item);
-		}*/
 	}
 
 	private void doSearch(String str) {
@@ -189,13 +197,6 @@ public class MainActivity extends AppCompatActivity {
 		}else {
 			PersonTool.getTwentyPerson(handler,0,str);
 		}
-
-/*		for(int i = 0; i < mPersons.size(); i++) {
-			if (mPersons.get(i).getName().contains(str)) {
-				mSearchResult.add(mPersons.get(i));
-			}
-		}
-		adapter.notifyDataSetChanged();*/
 	}
 
 	//给所有非输入框控件设置触摸监听，以收起软键盘

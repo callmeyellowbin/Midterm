@@ -23,6 +23,7 @@ import com.lxc.midterm.RoleItemAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
 	private TextView search;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 							0);
 				}
 				// 传递序列化对象给详情页
-                Intent intent = new Intent(this, DeailActivity.class);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("person", mSearchResult.get(position));
                 startActivityForResult(intent, position);
 			}
@@ -119,25 +120,20 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		//resultCode返回0无修改，返回1删除，返回2修改
-		switch (resultCode) {
-			case 1: {
-				mSearchResult.remove(requestCode);
-				mPersons.remove(requestCode);
-				adapter.notifyDataSetChanged();
-				break;
-			}
-			case 2: {
-				Person p =(Person) data.getSerializableExtra("person");
-				mSearchResult.set(requestCode, p);
-				adapter.notifyDataSetChanged();
-				for (int i = 0; i < mPersons.size(); i++) {
-					if (mPersons.get(i).getName().equals(p.getName())) {
-						mPersons.set(i, p);
-						break;
-					}
+		if (data.getBooleanExtra("isDelete", false)) {
+			mSearchResult.remove(requestCode);
+			mPersons.remove(requestCode);
+			adapter.notifyDataSetChanged();
+		}
+		else if (data.getBooleanExtra("isEdit", false)) {
+			Person p = (Person) data.getSerializableExtra("person");
+			mSearchResult.set(requestCode, p);
+			adapter.notifyDataSetChanged();
+			for (int i = 0; i < mPersons.size(); i++) {
+				if (mPersons.get(i).getName().equals(p.getName())) {
+					mPersons.set(i, p);
+					break;
 				}
-				break;
 			}
 		}
 	}

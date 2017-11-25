@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.lxc.midterm.domain.Person;
 
 import java.util.List;
 

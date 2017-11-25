@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
 							0);
 				}
 				// 传递序列化对象给详情页
-                /*Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("person", mPersons.get(position));
-                startActivityForResult(intent, position);*/
+                startActivityForResult(intent, position);
 			}
 		});
 

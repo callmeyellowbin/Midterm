@@ -30,6 +30,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
 	private TextView search;
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
 		//resultCode返回0无修改，返回1删除，返回2修改
 		switch (resultCode) {
 			case 1: {

@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Midterm</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="opponent_wait_hint">等待其他玩家加入……</string>
+    <string name="first_send_card_hint">游戏开始！请出牌</string>
+    <string name="wait_hint">等待对手出牌</string>
+    <string name="send_card_hint">请出牌</string>
+    <string name="win">胜利！</string>
+    <string name="lose">失利~</string>
+    <string name="tie">平局</string>
+    <string name="rules">  游戏开始时，你和对方被分配五张相同的武将牌，对战双方都持有武力值1~5的武将各一张
+        \n  除了武力值，每个武将都有他的五行属性——金木水火土，其中相克的情况为：
+        \n  木克土，土克水，水克火，火克金，金克木。
+        \n  本游戏采用回合制，以五局三胜制判定最终胜负。
+        \n  游戏开始后双方均可以选择先手，
+        先出牌的一方即开始了一个新的回合，然后需要等待对方出牌。该回合里双方都出完牌后，接着执行两张武将牌的“对决”，判定规则为：若双方武将存在五行相克关系，则被克的一方该回合被击败；
+        若不存在相克关系，则武力值大的一方将取得该回合的胜利，若两个武将武力值相等则平局。</string>
 </resources>

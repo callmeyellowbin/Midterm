@@ -22,8 +22,6 @@ import com.lxc.midterm.RoleItemAdapter;
 import com.lxc.midterm.domain.Person;
 import com.lxc.midterm.tool.PersonTool;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
@@ -74,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
 							0);
 				}
 				// 传递序列化对象给详情页
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                /*Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("person", mPersons.get(position));
-                startActivityForResult(intent, position);
+                startActivityForResult(intent, position);*/
 			}
 		});
 

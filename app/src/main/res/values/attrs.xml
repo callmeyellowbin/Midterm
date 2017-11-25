@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="versusRole">
+        <attr name="role_name" format="color" />
+        <attr name="role_ability" format="string" />
+        <attr name="role_field" format="color" />
+    </declare-styleable>
+</resources>

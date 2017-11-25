@@ -50,7 +50,4 @@ public class Game {
 		this.opposite_id = opposite_id;
 	}
 
-	
-	
-	
 }

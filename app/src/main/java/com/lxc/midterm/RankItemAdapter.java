@@ -79,7 +79,12 @@ public class RankItemAdapter extends RecyclerView.Adapter<RankItemAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Person item = mItemsList.get(position);
-        Glide.with(context).load(item.getHead_url()).into(holder.roleHead);
+        String head_url = null;
+        if(head_url != null){
+            Glide.with(context).load(item.getHead_url()).into(holder.roleHead);
+        }else {
+            Glide.with(context).load(R.drawable.origin_head).into(holder.roleHead);
+        }
         holder.roleName.setText(item.getName());
         holder.tv_good_num.setText(item.getGood().toString()+"点赞");
         holder.itemView.setTag(position);

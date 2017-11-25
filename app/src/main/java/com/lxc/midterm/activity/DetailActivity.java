@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.lxc.midterm.Const;
 import com.lxc.midterm.R;
 import com.lxc.midterm.domain.Person;
 import com.lxc.midterm.domain.SimpleResponse;
@@ -211,10 +212,19 @@ public class DetailActivity extends AppCompatActivity {
                         person.setCountry(country.getText().toString());
                         person.setHometown(hometown.getText().toString());
                         person.setDescription(description.getText().toString());
+
                         if(head_path == null){
                             PersonTool.addUpdatePerson(handler,person,null,null);
                         }
                         else{
+                            //设置头像url
+                            String head_url = null;
+                            if(head_path!= null &&head_path.endsWith("png")){
+                                head_url = Const.IP + "head/" + person.getUuid() + ".png";
+                            }else if(head_path!= null &&head_path.endsWith("jpg")){
+                                head_url = Const.IP + "head/" + person.getUuid() + ".jpg";
+                            }
+                            person.setHead_url(head_url);
                             File file = new File(head_path);
                             if(file.exists()){
                                 PersonTool.addUpdatePerson(handler,person,file,null);

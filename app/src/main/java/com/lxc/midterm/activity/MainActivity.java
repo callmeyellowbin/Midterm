@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 				// 传递序列化对象给详情页
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("person", mPersons.get(position));
+                intent.putExtra("add",true);
                 startActivityForResult(intent, position);
 			}
 		});
@@ -177,22 +178,42 @@ public class MainActivity extends AppCompatActivity {
 				startActivity(new Intent(MainActivity.this,GameActivity.class));
 			}
 		});
+
+		//添加人物监听
+		add = findViewById(R.id.home_add);
+		add.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				startActivityForResult(new Intent(MainActivity.this,AddActivity.class),1);
+			}
+		});
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//删除、修改
-		if (data.getBooleanExtra("isDelete",false)) {
-			PersonTool.deletePerson(handler, mPersons.get(requestCode).getPerson_id());
-			mPersons.clear();
-			initItems();
-			adapter.notifyDataSetChanged();
-		} else if (data.getBooleanExtra("isEdit", false)) {
-			Person p =(Person) data.getSerializableExtra("person");
-			mPersons.set(requestCode, p);
-			adapter.notifyDataSetChanged();
-			// TODO: 2017/11/23 修改的方法还没给出
+		if(data != null){
+			if (data.getBooleanExtra("isDelete",false)) {
+				PersonTool.deletePerson(handler, mPersons.get(requestCode).getPerson_id());
+				mPersons.clear();
+				initItems();
+				adapter.notifyDataSetChanged();
+			} else if (data.getBooleanExtra("isEdit", false)) {
+				Person p =(Person) data.getSerializableExtra("person");
+				mPersons.set(requestCode, p);
+				adapter.notifyDataSetChanged();
+				// TODO: 2017/11/23 修改的方法还没给出
+
+			}else if(data.getBooleanExtra("add", false)){
+				if(resultCode == 2){
+					//添加成功
+					Person p =(Person) data.getSerializableExtra("add_person");
+					mPersons.add(0,p);
+					adapter.notifyDataSetChanged();
+				}
+			}
 		}
+
 	}
 
 	private void initItems() {

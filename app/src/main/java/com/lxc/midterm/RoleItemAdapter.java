@@ -81,7 +81,12 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Person item = mItemsList.get(position);
-        Glide.with(context).load(item.getHead_url()).into(holder.roleHead);
+        String head_url = item.getHead_url();
+        if(head_url != null){
+            Glide.with(context).load(item.getHead_url()).into(holder.roleHead);
+        }else {
+            Glide.with(context).load(R.drawable.origin_head).into(holder.roleHead);
+        }
         holder.roleName.setText(item.getName());
         holder.roleSex.setText(item.getSex());
         holder.roleAge.setText(item.getPerson_date());

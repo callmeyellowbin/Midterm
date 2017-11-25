@@ -23,6 +23,7 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
 
     private List<Person> mItemsList;
     private Context context;
+    private Integer isGood;//如果是在排行榜显示的话，需要显示人气值，这个为1，否则为0
 
     private onItemClickListener mOnItemClickListener = null;
     private onItemLongClickListener mOnItemLongClickListener = null;
@@ -49,6 +50,7 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
         TextView roleName;
         TextView roleSex;
         TextView roleAge;
+        TextView roleGood;
 
         public ViewHolder(View view) {
             super(view);
@@ -57,13 +59,15 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
             roleName = view.findViewById(R.id.role_name);
             roleSex = view.findViewById(R.id.role_gender);
             roleAge = view.findViewById(R.id.role_age);
+            roleGood = view.findViewById(R.id.role_good);
         }
     }
 
     //把context也传入，加载头像的时候要用到
-    public RoleItemAdapter(List<Person> list, Context context) {
+    public RoleItemAdapter(List<Person> list, Context context,Integer isGood) {
         mItemsList = list;
         this.context = context;
+        this.isGood = isGood;
     }
 
     @Override
@@ -84,6 +88,9 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
         holder.roleSex.setText(item.getSex());
         holder.roleAge.setText(item.getPerson_date());
         holder.itemView.setTag(position);
+        if(isGood == 1){
+            holder.roleGood.setText(item.getGood() + "赞");
+        }
     }
 
     @Override

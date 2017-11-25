@@ -18,7 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by 12194 on 2017/11/18.
  */
 
-public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHolder>
+public class RankItemAdapter extends RecyclerView.Adapter<RankItemAdapter.ViewHolder>
                             implements View.OnClickListener,View.OnLongClickListener{
 
     private List<Person> mItemsList;
@@ -47,23 +47,21 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
         View itemView;
         CircleImageView roleHead;
         TextView roleName;
-        TextView roleSex;
-        TextView roleAge;
-        TextView roleGood;
+        TextView tv_good_num;
+        TextView tv_honor;
 
         public ViewHolder(View view) {
             super(view);
             itemView = view;
-            roleHead = view.findViewById(R.id.role_head);
-            roleName = view.findViewById(R.id.role_name);
-            roleSex = view.findViewById(R.id.role_gender);
-            roleAge = view.findViewById(R.id.role_age);
-           // roleGood = view.findViewById(R.id.role_good);
+            roleHead = view.findViewById(R.id.role_head_rank);
+            roleName = view.findViewById(R.id.role_name_rank);
+            tv_good_num = view.findViewById(R.id.tv_good_num);
+            tv_honor = view.findViewById(R.id.tv_honor);
         }
     }
 
     //把context也传入，加载头像的时候要用到
-    public RoleItemAdapter(List<Person> list, Context context) {
+    public RankItemAdapter(List<Person> list, Context context) {
         mItemsList = list;
         this.context = context;
     }
@@ -71,7 +69,7 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_bg, parent, false);
+                .inflate(R.layout.item_rank, parent, false);
         ViewHolder holder = new ViewHolder(view);
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
@@ -83,8 +81,7 @@ public class RoleItemAdapter extends RecyclerView.Adapter<RoleItemAdapter.ViewHo
         Person item = mItemsList.get(position);
         Glide.with(context).load(item.getHead_url()).into(holder.roleHead);
         holder.roleName.setText(item.getName());
-        holder.roleSex.setText(item.getSex());
-        holder.roleAge.setText(item.getPerson_date());
+        holder.tv_good_num.setText(item.getGood().toString()+"点赞");
         holder.itemView.setTag(position);
     }
 

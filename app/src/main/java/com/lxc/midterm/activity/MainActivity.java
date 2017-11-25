@@ -34,12 +34,15 @@ public class MainActivity extends AppCompatActivity {
 	private TextView search;
 	private TextView edit;
 	private TextView add;
+	private TextView tv_to_good_rank;
 	private RoleItemAdapter adapter;
 	private RecyclerView recyclerView;
 	private TextView beginGame;
 	private int pull_times;		//记录上拉刷新的次数
 	private List<Person> mPersons = new ArrayList<>();
 	private InputMethodManager imm; //管理软键盘
+
+
 	private Handler handler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 		initItems();    //初始化任务列表
 		imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		adapter = new RoleItemAdapter(mPersons, this,0);
+		adapter = new RoleItemAdapter(mPersons, this);
 		adapter.setOnItemClickListener(new RoleItemAdapter.onItemClickListener() {
 			@Override
 			public void onItemClick(View view, int position) {
@@ -73,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
 							0);
 				}
 				// 传递序列化对象给详情页
-/*                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("person", mPersons.get(position));
-                startActivityForResult(intent, position);*/
+                startActivityForResult(intent, position);
 			}
 		});
 
@@ -86,11 +89,22 @@ public class MainActivity extends AppCompatActivity {
 
 		search = findViewById(R.id.home_search);
 		edit = findViewById(R.id.home_edit);
+		tv_to_good_rank = findViewById(R.id.tv_to_good_rank);
+		tv_to_good_rank.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				//进入排行榜
+				startActivity(new Intent(MainActivity.this,RankActivity.class));
+			}
+		});
+
 		beginGame = findViewById(R.id.begin_game);
 		search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (edit.getVisibility() == View.INVISIBLE) {
+					//隐藏排行榜
+					tv_to_good_rank.setVisibility(View.INVISIBLE);
 					search.setBackgroundResource(R.drawable.delete);
 					edit.setVisibility(View.VISIBLE);
 					edit.requestFocus();    //获取焦点
@@ -105,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 								0);
 					}
 					edit.setVisibility(View.INVISIBLE);
+					tv_to_good_rank.setVisibility(View.VISIBLE);
 				}
 			}
 		});

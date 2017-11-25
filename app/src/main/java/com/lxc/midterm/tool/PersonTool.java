@@ -169,13 +169,14 @@ public class PersonTool {
     }
 
         /*对人物点赞*/
-        public static void addGood(final Handler handler){
+        public static void addGood(final Handler handler,final Integer person_id){
             // 使用okhttp
             new Thread(){
                 @Override
                 public void run() {
                     OkHttpClient mokHttpClient = new OkHttpClient();
                     FormBody.Builder builder = new FormBody.Builder();
+                    builder.add("person_id", String.valueOf(person_id));
                     //设置参数
                     Request request = new Request.Builder().post(builder.build()).url(Const.IP + "addGood.action").build();
                     mokHttpClient.newCall(request).enqueue(new Callback() {

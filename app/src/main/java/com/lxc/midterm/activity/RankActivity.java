@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.lxc.midterm.R;
-import com.lxc.midterm.RoleItemAdapter;
+import com.lxc.midterm.RankItemAdapter;
 import com.lxc.midterm.domain.Person;
 import com.lxc.midterm.tool.PersonTool;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class RankActivity extends AppCompatActivity {
 
-    private RoleItemAdapter adapter;
+    private RankItemAdapter adapter;
     private RecyclerView recyclerView;
     private RefreshLayout refreshLayout;
     private int pull_times;		//记录上拉刷新的次数
@@ -62,8 +62,8 @@ public class RankActivity extends AppCompatActivity {
         });
 
         initItems();    //初始化任务列表
-        adapter = new RoleItemAdapter(mPersons, this,1);
-        adapter.setOnItemClickListener(new RoleItemAdapter.onItemClickListener() {
+        adapter = new RankItemAdapter(mPersons, this);
+        adapter.setOnItemClickListener(new RankItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 // 传递序列化对象给详情页

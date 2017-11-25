@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--CoordinatorLayout是为了使背景图延伸到状态栏-->
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,7 +16,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/timg"
-    tools:context="com.lxc.midterm.activity.DetailActivity">
+    tools:context="com.lxc.midterm.activity.DetailActivity"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/first_bar"
@@ -34,6 +45,7 @@
             android:id="@+id/edit_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
 
@@ -105,6 +117,7 @@
             android:layout_gravity="center"
             android:background="@null"
             android:textSize="25sp"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:text="曹操"/>
         <TextView
@@ -112,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textColor="@color/colorBlack"
             android:text="(字:"/>
         <EditText
@@ -120,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:background="@null"
             android:textColor="@color/colorBlack"
             android:text="孟德"/>
@@ -128,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textColor="@color/colorBlack"
             android:text=")"/>
     </LinearLayout>
@@ -158,6 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:textColor="@color/colorBlack"
                 android:text="生卒年份:"/>
@@ -197,6 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="性别"
+                android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorBlack"
                 android:textSize="25sp"/>
@@ -209,7 +224,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorBlack"
-                android:textSize="25sp"/>
+                android:textSize="20sp"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/country_layout"
@@ -223,6 +238,7 @@
                 android:text="势力"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorBlack"
+                android:textStyle="bold"
                 android:textSize="25sp"/>
             <EditText
                 android:id="@+id/country"
@@ -233,7 +249,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorBlack"
-                android:textSize="25sp"/>
+                android:textSize="20sp"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/hometown_layout"
@@ -246,18 +262,21 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:text="籍贯"
+                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:textSize="25sp"/>
             <EditText
                 android:id="@+id/hometown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:text="安徽亳州"
                 android:background="@null"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorBlack"
-                android:textSize="25sp"/>
+                android:textSize="20sp"/>
         </LinearLayout>
     </LinearLayout>
     <View
@@ -278,11 +297,15 @@
             android:layout_gravity="center"
             android:text="简介"
             android:textSize="25sp"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack"/>
         <EditText
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/colorBlack"
             android:background="@null"
             android:text="此处为简介"
@@ -291,3 +314,4 @@
 
 
 </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

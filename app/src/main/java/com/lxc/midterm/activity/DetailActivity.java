@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.lxc.midterm.Person;
+import com.lxc.midterm.domain.Person;
 import com.lxc.midterm.R;
 
 public class DetailActivity extends AppCompatActivity {
@@ -47,16 +47,16 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         person = (Person) getIntent().getSerializableExtra("person");
-        name = (EditText) findViewById(R.id.name);
-        second_name = (EditText) findViewById(R.id.second_name);
-        head = (ImageView) findViewById(R.id.head);
-        person_date = (EditText) findViewById(R.id.person_date);
-        sex = (EditText) findViewById(R.id.sex);
-        country = (EditText) findViewById(R.id.country);
-        hometown = (EditText) findViewById(R.id.hometown);
-        description = (EditText) findViewById(R.id.description);
-        first_bar = (RelativeLayout) findViewById(R.id.first_bar);
-        second_bar = (RelativeLayout) findViewById(R.id.second_bar);
+        name = findViewById(R.id.name);
+        second_name = findViewById(R.id.second_name);
+        head = findViewById(R.id.head);
+        person_date = findViewById(R.id.person_date);
+        sex = findViewById(R.id.sex);
+        country = findViewById(R.id.country);
+        hometown = findViewById(R.id.hometown);
+        description = findViewById(R.id.description);
+        first_bar = findViewById(R.id.first_bar);
+        second_bar = findViewById(R.id.second_bar);
         //未按编辑键不可编辑
         name.setInputType(InputType.TYPE_NULL);
         second_name.setInputType(InputType.TYPE_NULL);
@@ -65,6 +65,10 @@ public class DetailActivity extends AppCompatActivity {
         country.setInputType(InputType.TYPE_NULL);
         hometown.setInputType(InputType.TYPE_NULL);
         description.setInputType(InputType.TYPE_NULL);
+        //改变默认的单行模式
+        description.setSingleLine(false);
+        //水平滚动设置为False
+        description.setHorizontallyScrolling(false);
         InitListener();
         InitProperty(person);
     }

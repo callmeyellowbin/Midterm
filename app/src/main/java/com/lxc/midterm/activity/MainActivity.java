@@ -166,22 +166,17 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-		//resultCode返回0无修改，返回1删除，返回2修改
-		switch (resultCode) {
-			case 1: {
-				PersonTool.deletePerson(handler, requestCode);
-				mPersons.clear();
-				initItems();
-				adapter.notifyDataSetChanged();
-				break;
-			}
-			case 2: {
-				Person p =(Person) data.getSerializableExtra("person");
-				mPersons.set(requestCode, p);
-				adapter.notifyDataSetChanged();
-				// TODO: 2017/11/23 修改的方法还没给出
-			}
+		//删除、修改
+		if (data.getBooleanExtra("isDelete",false)) {
+			PersonTool.deletePerson(handler, mPersons.get(requestCode).getPerson_id());
+			mPersons.clear();
+			initItems();
+			adapter.notifyDataSetChanged();
+		} else if (data.getBooleanExtra("isEdit", false)) {
+			Person p =(Person) data.getSerializableExtra("person");
+			mPersons.set(requestCode, p);
+			adapter.notifyDataSetChanged();
+			// TODO: 2017/11/23 修改的方法还没给出
 		}
 	}
 

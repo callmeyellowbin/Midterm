@@ -16,21 +16,22 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- 增加windowSoftInputMode阻止软键盘挤压布局 -->
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/HomeTheme"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".activity.VersusActivity" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity android:name=".activity.VersusActivity"></activity>
         <activity
             android:name=".activity.GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.RankActivity">
-        </activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+      <activity android:name=".activity.DetailActivity"/>
     </application>
 
 </manifest>

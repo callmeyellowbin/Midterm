@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- 增加windowSoftInputMode阻止软键盘挤压布局 -->
         <activity
             android:name=".activity.MainActivity"
@@ -30,6 +31,7 @@
             android:name=".activity.GameActivity"
             android:label="@string/title_activity_game"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+      <activity android:name=".activity.DetailActivity"/>
     </application>
 
 </manifest>

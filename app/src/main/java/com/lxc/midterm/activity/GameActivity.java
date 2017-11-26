@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +28,7 @@ import com.lxc.midterm.domain.Game;
 import com.lxc.midterm.domain.GameRequest;
 import com.lxc.midterm.domain.GameResponse;
 import com.lxc.midterm.domain.Person;
+import com.lxc.midterm.utils.Name2Pinyin;
 import com.lxc.midterm.view.VersusRoleView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,6 +59,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
 	private Client client;
 	private Game game;
+	MediaPlayer mp = new MediaPlayer();
 
 	int state = 1;
 	int myScore = 0;//计分
@@ -149,6 +153,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 		waitAnimator.setRepeatCount(ValueAnimator.INFINITE);
 		waitAnimator.setRepeatMode(ValueAnimator.RESTART);
 		waitAnimator.start();
+
+
+
 	}
 
 	public void connectServer() {
@@ -203,8 +210,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 				player2.setVisibility(View.VISIBLE);
 				ivAnimation.setVisibility(View.VISIBLE);
 				player2.setPerson(oppoPerson);
-				resultEnum res = response.getCode() == 1 ? resultEnum.Win : resultEnum.Lose;
+				resultEnum res = response.getCode() == 2 ? resultEnum.Win : resultEnum.Lose;
 				res = response.getCode() == 5 ? resultEnum.Tied : res;
+
+				//播放攻击音效
+				mp.reset();
+				mp = MediaPlayer.create(this, R.raw.attack);
+				mp.start();
 				tvHint.setText("");
 
 				ValueAnimator valueAnimator = ValueAnimator.ofInt(0,versusTime);
@@ -226,7 +238,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 					@Override
 					public void onAnimationEnd(Animator animation) {
 						super.onAnimationEnd(animation);
-						showResult(finalRes);
+						mp.reset();//关闭攻击音效
+						showResult(finalRes);//展示结果
 					}
 				});
 				valueAnimator.start();
@@ -273,18 +286,34 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 		round++;//轮数增加
 
 		int resId = R.drawable.win;
+		int rawId = R.raw.caocao_win;
+		Person myPerson = ((VersusRoleView) player1).getPerson();
+		Resources resources = getResources();
+		String name_pinyin = Name2Pinyin.getPinyin(myPerson.getName());
+
 		switch (res) {
 			case Win:
 				resId = R.drawable.win;
+				rawId = resources.getIdentifier(getPackageName()+":raw/"+name_pinyin+"_win",
+						null, null);
 				increaseScore(playerEnum.Myself);
 				break;
 			case Lose:
 				resId = R.drawable.lose;
+				rawId = resources.getIdentifier(getPackageName()+":raw/"+name_pinyin+"_lose",
+						null, null);
 				increaseScore(playerEnum.Opponent);
 				break;
 			case Tied:
+				rawId = R.raw.tie;
 				resId = R.drawable.tied;
 				break;
+		}
+
+		//读取成功
+		if (rawId > 0){
+			mp = MediaPlayer.create(this, rawId);
+			mp.start();
 		}
 		//动画展示结果 缓慢出现然后缓慢消失
 		ivResult.setVisibility(View.VISIBLE);
@@ -386,7 +415,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 			client.send(JSON.toJSONString(gameRequest));
 		}
 
-		if(client != null && client.isConnecting()){
+		if(client != null && client.isOpen()){
 			client.close();
 		}
 	}

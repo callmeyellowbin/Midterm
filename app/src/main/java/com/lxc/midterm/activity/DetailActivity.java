@@ -108,7 +108,7 @@ public class DetailActivity extends AppCompatActivity {
         person_date.setEnabled(false);
         sex.setEnabled(false);
         country.setEnabled(false);
-        hometown.setEnabled(false);
+        hometown.setFocusableInTouchMode(false);
         description.setEnabled(false);
         head.setEnabled(false);
         //使TextView的Description可以滚动起来
@@ -179,7 +179,8 @@ public class DetailActivity extends AppCompatActivity {
                 person_date.setEnabled(true);
                 sex.setEnabled(true);
                 country.setEnabled(true);
-                hometown.setEnabled(true);
+                hometown.setFocusableInTouchMode(true);
+                hometown.setCursorVisible(true);
                 description.setEnabled(true);
                 head.setEnabled(true);
                 description.setVisibility(View.VISIBLE);
@@ -302,7 +303,7 @@ public class DetailActivity extends AppCompatActivity {
         person_date.setEnabled(false);
         sex.setEnabled(false);
         country.setEnabled(false);
-        hometown.setEnabled(false);
+        hometown.setFocusableInTouchMode(false);
         head.setEnabled(false);
         //显示回TextView
         description_tv.setText(originDescription);

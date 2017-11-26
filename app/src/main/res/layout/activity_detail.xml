@@ -24,7 +24,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/second_bar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,7 +35,7 @@
                     android:id="@+id/cancel"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="left|center_vertical"
+                    android:layout_alignParentLeft="true"
                     android:background="@drawable/cancel" />
                 <ImageView
                     android:id="@+id/save"
@@ -43,16 +43,15 @@
                     android:layout_height="40dp"
                     android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="300dp"
+                    android:layout_alignParentRight="true"
                     android:src="@drawable/save" />
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/first_bar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/timg"
-                android:orientation="horizontal">
+                android:background="@drawable/timg">
 
                 <ImageView
                     android:id="@+id/btn_back"
@@ -60,47 +59,44 @@
                     android:layout_height="40dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/back"
-                    android:layout_gravity="left|center_vertical"
+                    android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"/>
                 <Button
                     android:id="@+id/photo_bt_del"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginLeft="220dp"
+                    android:layout_toLeftOf="@id/edit"
                     android:background="@drawable/trash" />
                 <Button
                     android:id="@+id/edit"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_toLeftOf="@id/btn_good"
                     android:background="@drawable/edit" />
                 <Button
                     android:id="@+id/btn_good"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_alignParentRight="true"
                     android:background="@drawable/unlike"
                     android:scaleType="centerInside" />
-            </LinearLayout>
+            </RelativeLayout>
 
         </FrameLayout>
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8.5">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="12"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="0.8"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
                     <EditText
                         android:id="@+id/name"
@@ -111,6 +107,8 @@
                         android:textSize="25sp"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:text="曹操"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -141,7 +139,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_weight="2"
                     android:orientation="vertical"
                     android:layout_gravity="center">
                     <ImageView
@@ -314,6 +312,5 @@
                         android:textSize="20sp"/>
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

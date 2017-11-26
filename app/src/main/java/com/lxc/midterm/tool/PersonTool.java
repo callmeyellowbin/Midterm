@@ -71,7 +71,7 @@ public class PersonTool {
     /*添加人物的请求,音频文件没有的话填null，如果返回的simpleResponse的err为空的话则添加成功*/
     /*音频上传目前暂未处理，填null*/
     /*返回SimpleResponse*/
-    public static void addPerson(final Handler handler, final Person person, File head_file, File audio_file){
+    public static void addUpdatePerson(final Handler handler, final Person person, File head_file, File audio_file){
         //上传帖子图片
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("person",JSON.toJSONString(person));
@@ -83,7 +83,7 @@ public class PersonTool {
         }
         MultipartBody requestBody = builder.build();
         Request request = new Request.Builder()
-                .url(Const.IP +"/addPerson.action").post(requestBody).build();
+                .url(Const.IP +"/addUpdatePerson.action").post(requestBody).build();
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -93,7 +93,13 @@ public class PersonTool {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String ans_str = response.body().string();
-                SimpleResponse simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                SimpleResponse simpleResponse = null;
+                try{
+                    simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    System.out.println(ans_str);
+                }
                 Message message = new Message();
                 message.what = 0x2;
                 message.obj=simpleResponse;
@@ -123,7 +129,13 @@ public class PersonTool {
                     public void onResponse(Call call, Response response) throws IOException {
                         String ans_str = response.body().string();
                         //System.out.println(ans_str);
-                        SimpleResponse simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                        SimpleResponse simpleResponse = null;
+                        try{
+                            simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            System.out.println(ans_str);
+                        }
                         Message msg = new Message();
                         msg.what = 0x3;
                         msg.obj = simpleResponse;
@@ -134,5 +146,75 @@ public class PersonTool {
             }
         }.start();
     }
+
+    /*返回按照人气值排序的人物列表*/
+    public static void getTenRankPerson(final Handler handler, final Integer page){
+        // 使用okhttp
+        new Thread(){
+            @Override
+            public void run() {
+                OkHttpClient mokHttpClient = new OkHttpClient();
+                FormBody.Builder builder = new FormBody.Builder();
+                builder.add("page",page.toString());
+                //设置参数
+                Request request = new Request.Builder().post(builder.build()).url(Const.IP + "getGoodRank.action").build();
+                mokHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String ans_str = response.body().string();
+                        //System.out.println(ans_str);
+                        JSONArray jsonArray = JSON.parseArray(ans_str);
+                        List<Person> list = jsonArray.toJavaList(Person.class);
+                        Message msg = new Message();
+                        msg.what = 0x4;
+                        msg.obj = list;
+                        handler.sendMessage(msg);
+                    }
+                });
+                super.run();
+            }
+        }.start();
+    }
+
+        /*对人物点赞*/
+        public static void addGood(final Handler handler,final Integer person_id){
+            // 使用okhttp
+            new Thread(){
+                @Override
+                public void run() {
+                    OkHttpClient mokHttpClient = new OkHttpClient();
+                    FormBody.Builder builder = new FormBody.Builder();
+                    builder.add("person_id", String.valueOf(person_id));
+                    //设置参数
+                    Request request = new Request.Builder().post(builder.build()).url(Const.IP + "addGood.action").build();
+                    mokHttpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
+                        }
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String ans_str = response.body().string();
+                            SimpleResponse simpleResponse = null;
+                            try{
+                                simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                System.out.println(ans_str);
+                            }
+                            Message msg = new Message();
+                            msg.what = 0x5;
+                            msg.obj = simpleResponse;
+                            handler.sendMessage(msg);
+                        }
+                    });
+                    super.run();
+                }
+            }.start();
+        }
 
 }

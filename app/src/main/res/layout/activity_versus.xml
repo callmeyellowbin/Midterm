@@ -1,10 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#dd9b6c"
     tools:context="com.lxc.midterm.activity.VersusActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:background="@drawable/versus_bg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#c36701"/>
+
+    <LinearLayout
+        android:id="@+id/plays1"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:animateLayoutChanges="true">
+
+        <com.lxc.midterm.view.VersusRoleView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+        </com.lxc.midterm.view.VersusRoleView>
+
+        <com.lxc.midterm.view.VersusRoleView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+        </com.lxc.midterm.view.VersusRoleView>
+
+        <com.lxc.midterm.view.VersusRoleView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+        </com.lxc.midterm.view.VersusRoleView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/plays2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:animateLayoutChanges="true"
+        >
+
+        <com.lxc.midterm.view.VersusRoleView
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+        </com.lxc.midterm.view.VersusRoleView>
+
+        <com.lxc.midterm.view.VersusRoleView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+        </com.lxc.midterm.view.VersusRoleView>
+
+    </LinearLayout>
+
+</LinearLayout>

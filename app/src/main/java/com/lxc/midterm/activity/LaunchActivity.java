@@ -93,7 +93,6 @@ public class LaunchActivity extends AppCompatActivity {
 			return;
 		isOpened = true;
 
-		//TODO 伟杰你可以把MainActivity改成你自己的，然后修改这里
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 		finish();

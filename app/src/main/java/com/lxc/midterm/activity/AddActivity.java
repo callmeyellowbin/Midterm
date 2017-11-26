@@ -54,18 +54,20 @@ public class AddActivity extends AppCompatActivity {
                 SimpleResponse simpleResponse = (SimpleResponse) msg.obj;
                 if(simpleResponse != null && simpleResponse.getErr() == null){
                     //添加成功后
+                    //设置人物主键
+                    person.setPerson_id(simpleResponse.getPerson_id());
                     Toast.makeText(AddActivity.this,simpleResponse.getSuccess(),Toast.LENGTH_SHORT).show();
                     Intent addIntent = new Intent(AddActivity.this, MainActivity.class);
                     addIntent.putExtra("add",true);
                     addIntent.putExtra("add_person", person);
                     setResult(2, addIntent);//成功
-                    //finish();
+                    finish();
                 }else {
                     Toast.makeText(AddActivity.this,simpleResponse.getErr(),Toast.LENGTH_SHORT).show();
                     Intent addIntent = new Intent(AddActivity.this, MainActivity.class);
                     addIntent.putExtra("add",true);
                     setResult(1, addIntent);//失败
-                   //finish();
+                    finish();
                 }
             }
             super.handleMessage(msg);

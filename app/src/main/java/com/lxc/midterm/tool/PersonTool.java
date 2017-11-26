@@ -93,7 +93,13 @@ public class PersonTool {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String ans_str = response.body().string();
-                SimpleResponse simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                SimpleResponse simpleResponse = null;
+                try{
+                    simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    System.out.println(ans_str);
+                }
                 Message message = new Message();
                 message.what = 0x2;
                 message.obj=simpleResponse;
@@ -123,7 +129,13 @@ public class PersonTool {
                     public void onResponse(Call call, Response response) throws IOException {
                         String ans_str = response.body().string();
                         //System.out.println(ans_str);
-                        SimpleResponse simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                        SimpleResponse simpleResponse = null;
+                        try{
+                            simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            System.out.println(ans_str);
+                        }
                         Message msg = new Message();
                         msg.what = 0x3;
                         msg.obj = simpleResponse;
@@ -187,8 +199,13 @@ public class PersonTool {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String ans_str = response.body().string();
-                            //System.out.println(ans_str);
-                            SimpleResponse simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                            SimpleResponse simpleResponse = null;
+                            try{
+                                simpleResponse = JSON.parseObject(ans_str,SimpleResponse.class);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                System.out.println(ans_str);
+                            }
                             Message msg = new Message();
                             msg.what = 0x5;
                             msg.obj = simpleResponse;

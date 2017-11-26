@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +45,8 @@ public class DetailActivity extends AppCompatActivity {
     private TextView description_tv;
     private EditText second_name;
     private Person person;
-    private LinearLayout first_bar;
-    private LinearLayout second_bar;
+    private RelativeLayout first_bar;
+    private RelativeLayout second_bar;
     private boolean isDelete = false;
     private boolean isEdit = false;
     private String originName;
@@ -185,8 +187,6 @@ public class DetailActivity extends AppCompatActivity {
                 head.setEnabled(true);
                 description.setVisibility(View.VISIBLE);
                 description_tv.setVisibility(View.GONE);
-                //弹出软键盘
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
         findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
@@ -305,6 +305,8 @@ public class DetailActivity extends AppCompatActivity {
         country.setEnabled(false);
         hometown.setFocusableInTouchMode(false);
         head.setEnabled(false);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(name.getWindowToken(), 0);
         //显示回TextView
         description_tv.setText(originDescription);
         description.setVisibility(View.GONE);

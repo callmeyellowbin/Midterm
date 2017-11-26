@@ -34,12 +34,15 @@ public class MainActivity extends AppCompatActivity {
 	private TextView search;
 	private TextView edit;
 	private TextView add;
+	private TextView tv_to_good_rank;
 	private RoleItemAdapter adapter;
 	private RecyclerView recyclerView;
 	private TextView beginGame;
 	private int pull_times;		//记录上拉刷新的次数
 	private List<Person> mPersons = new ArrayList<>();
 	private InputMethodManager imm; //管理软键盘
+
+
 	private Handler handler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 				// 传递序列化对象给详情页
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("person", mPersons.get(position));
+                intent.putExtra("add",true);
                 startActivityForResult(intent, position);
 			}
 		});
@@ -86,11 +90,22 @@ public class MainActivity extends AppCompatActivity {
 
 		search = findViewById(R.id.home_search);
 		edit = findViewById(R.id.home_edit);
+		tv_to_good_rank = findViewById(R.id.tv_to_good_rank);
+		tv_to_good_rank.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				//进入排行榜
+				startActivity(new Intent(MainActivity.this,RankActivity.class));
+			}
+		});
+
 		beginGame = findViewById(R.id.begin_game);
 		search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (edit.getVisibility() == View.INVISIBLE) {
+					//隐藏排行榜
+					tv_to_good_rank.setVisibility(View.INVISIBLE);
 					search.setBackgroundResource(R.drawable.delete);
 					edit.setVisibility(View.VISIBLE);
 					edit.requestFocus();    //获取焦点
@@ -105,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 								0);
 					}
 					edit.setVisibility(View.INVISIBLE);
+					tv_to_good_rank.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -162,22 +178,42 @@ public class MainActivity extends AppCompatActivity {
 				startActivity(new Intent(MainActivity.this,GameActivity.class));
 			}
 		});
+
+		//添加人物监听
+		add = findViewById(R.id.home_add);
+		add.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				startActivityForResult(new Intent(MainActivity.this,AddActivity.class),1);
+			}
+		});
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//删除、修改
-		if (data.getBooleanExtra("isDelete",false)) {
-			PersonTool.deletePerson(handler, mPersons.get(requestCode).getPerson_id());
-			mPersons.clear();
-			initItems();
-			adapter.notifyDataSetChanged();
-		} else if (data.getBooleanExtra("isEdit", false)) {
-			Person p =(Person) data.getSerializableExtra("person");
-			mPersons.set(requestCode, p);
-			adapter.notifyDataSetChanged();
-			// TODO: 2017/11/23 修改的方法还没给出
+		if(data != null){
+			if (data.getBooleanExtra("isDelete",false)) {
+				PersonTool.deletePerson(handler, mPersons.get(requestCode).getPerson_id());
+				mPersons.clear();
+				initItems();
+				adapter.notifyDataSetChanged();
+			} else if (data.getBooleanExtra("isEdit", false)) {
+				Person p =(Person) data.getSerializableExtra("person");
+				mPersons.set(requestCode, p);
+				adapter.notifyDataSetChanged();
+				// TODO: 2017/11/23 修改的方法还没给出
+
+			}else if(data.getBooleanExtra("add", false)){
+				if(resultCode == 2){
+					//添加成功
+					Person p =(Person) data.getSerializableExtra("add_person");
+					mPersons.add(0,p);
+					adapter.notifyDataSetChanged();
+				}
+			}
 		}
+
 	}
 
 	private void initItems() {

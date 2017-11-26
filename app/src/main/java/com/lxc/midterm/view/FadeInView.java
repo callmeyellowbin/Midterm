@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.lxc.midterm.R;
@@ -50,11 +49,8 @@ public class FadeInView extends View {
 	public FadeInView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mBitmapPaint = new Paint();//Bitmap的画笔
-
 		//背景图
 		mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.mipmap.sanguo_launch);
-
-
 		mErasurePaint = new Paint();
 		//抗锯齿
 		mErasurePaint.setAntiAlias(true);
@@ -65,11 +61,8 @@ public class FadeInView extends View {
 		PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
 		mErasurePaint.setXfermode(mode);
 		mErasurePaint.setStyle(Paint.Style.STROKE);
-		//设置笔刷的样式，默认为BUTT，如果设置为ROUND(圆形),SQUARE(方形)，需要将填充类型Style设置为STROKE或者FILL_AND_STROKE
 		mErasurePaint.setStrokeCap(Paint.Cap.ROUND);
-		//设置画笔的结合方式
 		mErasurePaint.setStrokeJoin(Paint.Join.ROUND);
-
 
 		//绘制蒙版的画笔
 		mPaintRect = new Paint();
@@ -83,18 +76,19 @@ public class FadeInView extends View {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		Log.d("onTouch", "onMeasure");
+
 		width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
 		height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-		setMeasuredDimension(width, height);//设置宽和高
+		setMeasuredDimension(width, height);
 
-		//创建一个Bitmap，用于绘图。
+		//创建一个Bitmap作为蒙版
 		maskingBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-		bitmapCanvas = new Canvas(maskingBitmap);//该画布为bitmap。
+		bitmapCanvas = new Canvas(maskingBitmap);//该画布为bitmap
 
 		matrix.reset();
 		//变换矩阵，使得图片大小与屏幕匹配
-		matrix.postScale((float)width/mBitmapBackground.getWidth(), (float)height/mBitmapBackground.getHeight());
+		matrix.postScale((float)width/mBitmapBackground.getWidth(),
+				(float)height/mBitmapBackground.getHeight());
 	}
 
 	@Override
@@ -102,10 +96,12 @@ public class FadeInView extends View {
 		super.onDraw(canvas);
 		//将bitmapBackground设置该View画布的背景
 		canvas.drawBitmap(mBitmapBackground,matrix,null);
-		//然后画布添加背景的基础上添加bitmap
+
+		//然后画布添加背景的基础上绘制蒙版
 		canvas.drawBitmap(maskingBitmap, 0, 0, mBitmapPaint);
-		bitmapCanvas.drawRect(0, 0, width, height, mPaintRect);//bitmap上绘制一个蒙版
-		//bitmap上绘制路径，使用PorterDuff.Mode.XOR模式，因此与底层蒙版重叠部分设为透明
+		bitmapCanvas.drawRect(0, 0, width, height, mPaintRect);
+
+		//在蒙版对应的bitmap上绘制路径，绘制的地方会变成透明
 		bitmapCanvas.drawPath(mPath, mErasurePaint);
 	}
 
@@ -115,7 +111,6 @@ public class FadeInView extends View {
 			mPath.lineTo(x, y);
 		isFirst = false;
 		mPath.moveTo(x, y);
-		Log.d("onTouch", String.valueOf(x)+" "+String.valueOf(y));
 		invalidate();//更新画面
 	}
 
